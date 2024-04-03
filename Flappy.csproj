@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
+        <OutputType>WinExe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -9,6 +9,35 @@
 
     <ItemGroup>
       <PackageReference Include="Raylib-cs" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="assets\bg.png" />
+      <EmbeddedResource Include="assets\bg.png" />
+      <None Remove="assets\fall.png" />
+      <EmbeddedResource Include="assets\fall.png" />
+      <None Remove="assets\game_over.png" />
+      <EmbeddedResource Include="assets\game_over.png" />
+      <None Remove="assets\gold_medal.png" />
+      <EmbeddedResource Include="assets\gold_medal.png" />
+      <None Remove="assets\ground.png" />
+      <EmbeddedResource Include="assets\ground.png" />
+      <None Remove="assets\idle.png" />
+      <EmbeddedResource Include="assets\idle.png" />
+      <None Remove="assets\jump.png" />
+      <EmbeddedResource Include="assets\jump.png" />
+      <None Remove="assets\pipe_down.png" />
+      <EmbeddedResource Include="assets\pipe_down.png" />
+      <None Remove="assets\pipe_up.png" />
+      <EmbeddedResource Include="assets\pipe_up.png" />
+      <None Remove="assets\ready.png" />
+      <EmbeddedResource Include="assets\ready.png" />
+      <None Remove="assets\scoreboard_dead.png" />
+      <EmbeddedResource Include="assets\scoreboard_dead.png" />
+      <None Remove="assets\silver_medal.png" />
+      <EmbeddedResource Include="assets\silver_medal.png" />
+      <None Remove="assets\title.png" />
+      <EmbeddedResource Include="assets\title.png" />
     </ItemGroup>
 
 </Project>

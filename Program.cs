@@ -1,7 +1,9 @@
 ﻿using System.Numerics;
+using System.Reflection;
 using Raylib_cs;
 
 Raylib.InitWindow(Global.OG_WIDTH * Global.SCALE, Global.OG_HEIGHT * Global.SCALE, "Flappy");
+Global.Initialize();
 
 var renderTexture = Raylib.LoadRenderTexture(Global.OG_WIDTH, Global.OG_HEIGHT);
 Raylib.SetTextureFilter(renderTexture.Texture, TextureFilter.Point);
@@ -96,9 +98,7 @@ while (!Raylib.WindowShouldClose()) {
     if (Raylib.IsKeyPressed(KeyboardKey.F1)) {
         Global.drawAABB = !Global.drawAABB;
     }
-
     Raylib.BeginDrawing();
-
     Raylib.BeginTextureMode(renderTexture);
     DrawBackground();
     switch (Global.gameState) {
@@ -274,19 +274,19 @@ class Global {
     public const int OG_WIDTH = 144;
     public const int OG_HEIGHT = 312;
     public const int SCALE = 2;
-    public static Texture2D backgroundTexture = Raylib.LoadTexture("assets/bg.png");
-    public static Texture2D groundTexture = Raylib.LoadTexture("assets/ground.png");
-    public static Texture2D titleTexture = Raylib.LoadTexture("assets/title.png");
-    public static Texture2D readyTexture = Raylib.LoadTexture("assets/ready.png");
-    public static Texture2D idleBirdTexture = Raylib.LoadTexture("assets/idle.png");
-    public static Texture2D flyBirdTexture = Raylib.LoadTexture("assets/jump.png");
-    public static Texture2D fallBirdTexture = Raylib.LoadTexture("assets/fall.png");
-    public static Texture2D pipeUpTexture = Raylib.LoadTexture("assets/pipe_up.png");
-    public static Texture2D pipeDownTexture = Raylib.LoadTexture("assets/pipe_down.png");
-    public static Texture2D gameOverTexture = Raylib.LoadTexture("assets/game_over.png");
-    public static Texture2D silverMedalTexture = Raylib.LoadTexture("assets/silver_medal.png");
-    public static Texture2D goldMedalTexture = Raylib.LoadTexture("assets/gold_medal.png");
-    public static Texture2D scoreBoardTexture = Raylib.LoadTexture("assets/scoreboard_dead.png");
+    public static Texture2D backgroundTexture;
+    public static Texture2D groundTexture;
+    public static Texture2D titleTexture;
+    public static Texture2D readyTexture;
+    public static Texture2D idleBirdTexture;
+    public static Texture2D flyBirdTexture;
+    public static Texture2D fallBirdTexture;
+    public static Texture2D pipeUpTexture;
+    public static Texture2D pipeDownTexture;
+    public static Texture2D gameOverTexture;
+    public static Texture2D silverMedalTexture;
+    public static Texture2D goldMedalTexture;
+    public static Texture2D scoreBoardTexture;
     public static float MULTIPLIER = 10.0f;
     public static float GRAVITY = 10.0f;
     public static List<Pipe> pipes = new List<Pipe>();
@@ -294,4 +294,31 @@ class Global {
     public static int score = 0;
     public static float deltaTime = 0.0f;
     public static bool drawAABB = false;
+
+    private static Texture2D LoadTexture(string path) {
+        var assembly = Assembly.GetExecutingAssembly();
+        using var stream = assembly.GetManifestResourceStream(path);
+        if (stream == null) return new Texture2D();
+        using var ms = new MemoryStream();
+        stream.CopyTo(ms);
+        var data = ms.ToArray();
+        if (data.Length == 0) return new Texture2D();
+        return Raylib.LoadTextureFromImage(Raylib.LoadImageFromMemory(".png", data));
+    }
+    
+    public static void Initialize() {
+        backgroundTexture = LoadTexture("Flappy.assets.bg.png");
+        groundTexture = LoadTexture("Flappy.assets.ground.png");
+        titleTexture = LoadTexture("Flappy.assets.title.png");
+        readyTexture = LoadTexture("Flappy.assets.ready.png");
+        idleBirdTexture = LoadTexture("Flappy.assets.idle.png");
+        flyBirdTexture = LoadTexture("Flappy.assets.jump.png");
+        fallBirdTexture = LoadTexture("Flappy.assets.fall.png");
+        pipeUpTexture = LoadTexture("Flappy.assets.pipe_up.png");
+        pipeDownTexture = LoadTexture("Flappy.assets.pipe_down.png");
+        gameOverTexture = LoadTexture("Flappy.assets.game_over.png");
+        silverMedalTexture = LoadTexture("Flappy.assets.silver_medal.png");
+        goldMedalTexture = LoadTexture("Flappy.assets.gold_medal.png");
+        scoreBoardTexture = LoadTexture("Flappy.assets.scoreboard_dead.png");
+    }
 }
