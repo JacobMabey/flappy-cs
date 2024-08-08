@@ -155,6 +155,12 @@ struct Bird {
 
     private bool IsGrounded() {
         return position.Y >= 256;
+        
+    }
+    private bool IsPastScreen()
+    {
+        return position.Y <= 0;
+
     }
 
     public void Update() {
@@ -175,7 +181,11 @@ struct Bird {
             velocity.Y = 0;
             Global.gameState = GameState.GameOver;
         }
-        
+        if(IsPastScreen())
+        {
+            velocity.Y = 0;
+            Global.gameState = GameState.GameOver;
+        }
         CheckCollisionWithPipes();
         CheckIfBetweenPipes();
 
