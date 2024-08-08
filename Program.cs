@@ -273,7 +273,7 @@ class Pipe {
 class Global {
     public const int OG_WIDTH = 144;
     public const int OG_HEIGHT = 312;
-    public const int SCALE = 2;
+    public const int SCALE = 4;
     public static Texture2D backgroundTexture;
     public static Texture2D groundTexture;
     public static Texture2D titleTexture;
