@@ -138,6 +138,8 @@ struct Bird {
     private float jumpForce = -5.0f;
     private float scoreTime = 0.0f;
     private float scoreRate = 0.75f;
+    private float rotation = 0.0f;
+    private float rotateCounter = 0.0f;
 
     private enum BirdState {
         Idle,
@@ -208,17 +210,24 @@ struct Bird {
     }
 
     public void Draw() {
+        float velocityX = 5.0f * Global.MULTIPLIER;
+        rotation = (float)(Math.Atan2(velocity.Y, velocityX) * 180.0 / Math.PI);
+        rotateCounter += (float)((rotateCounter < rotation ? 1 : (rotateCounter > rotation ? -1 : 0)) * Math.Sqrt(Math.Abs(rotation - rotateCounter)) * 0.1);
+        rotateCounter %= 360.0f;
+
+        Texture2D drawTexture = Global.idleBirdTexture;
         switch (state) {
             case BirdState.Idle:
-                Raylib.DrawTexture(Global.idleBirdTexture, (int)position.X, (int)position.Y, Color.White);
+                drawTexture = Global.idleBirdTexture;
                 break;
             case BirdState.Flying:
-                Raylib.DrawTexture(Global.flyBirdTexture, (int)position.X, (int)position.Y, Color.White);
+                drawTexture = Global.flyBirdTexture;
                 break;
             case BirdState.Falling:
-                Raylib.DrawTexture(Global.fallBirdTexture, (int)position.X, (int)position.Y, Color.White);
+                drawTexture = Global.fallBirdTexture;
                 break;
         }
+        Raylib.DrawTexturePro(drawTexture, new Rectangle(0.0f, 0.0f, drawTexture.Width, drawTexture.Height), new Rectangle(position.X, position.Y, drawTexture.Width, drawTexture.Height), new Vector2(drawTexture.Width / 2.0f, drawTexture.Height / 2.0f), rotateCounter, Color.White);
         DrawAABB();
     }
     
