@@ -210,10 +210,13 @@ struct Bird {
     }
 
     public void Draw() {
-        float velocityX = 5.0f * Global.MULTIPLIER;
+        float velocityX = 2.0f * Global.MULTIPLIER;
         rotation = (float)(Math.Atan2(velocity.Y, velocityX) * 180.0 / Math.PI);
-        rotateCounter += (float)((rotateCounter < rotation ? 1 : (rotateCounter > rotation ? -1 : 0)) * Math.Sqrt(Math.Abs(rotation - rotateCounter)) * 0.1);
+        if (rotation < rotateCounter || (rotation > rotateCounter && rotation > 20.0))
+            rotateCounter += (float)((rotateCounter < rotation ? 1 : -1) * Math.Sqrt(Math.Abs(rotation - rotateCounter)) * (rotateCounter < rotation ? 0.005 : 0.02));
         rotateCounter %= 360.0f;
+        if (rotation < -30.0 && rotateCounter < -30.0f)
+            rotateCounter = -30.0f; 
 
         Texture2D drawTexture = Global.idleBirdTexture;
         switch (state) {
