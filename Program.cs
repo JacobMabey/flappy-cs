@@ -42,7 +42,11 @@ void DrawBackground() {
 void DrawTitleScreen() {
     Raylib.DrawTexture(Global.titleTexture, Global.OG_WIDTH / 2 - Global.titleTexture.Width / 2, 50, Color.White);
     Raylib.DrawTexture(Global.readyTexture, Global.OG_WIDTH / 2 - Global.readyTexture.Width / 2, 75, Color.White);
-    Raylib.DrawText("Press SPACE to start", Global.OG_WIDTH / 2 - 50, 110, 10, Color.White);
+    Raylib.DrawText("Press SPACE to start", Global.OG_WIDTH / 2 - 60, 110, 10, Color.White);
+    Raylib.DrawText("Current Difficult:" + Global.difficulty.ToString(), Global.OG_WIDTH / 2 - 60, 130, 10, Color.White);
+    Raylib.DrawText("Press 1 for Easy", Global.OG_WIDTH / 2 - 50, 150, 8, Color.Black);
+    Raylib.DrawText("Press 2 for Medium", Global.OG_WIDTH / 2 - 50, 170, 8, Color.Black);
+    Raylib.DrawText("Press 3 for Hard", Global.OG_WIDTH / 2 - 50, 190, 8, Color.Black);
 }
 
 void UpdateGame() {
@@ -65,9 +69,21 @@ void DrawGameOver() {
 }
 
 void UpdateTitleScreen() {
-    if (Raylib.IsKeyPressed(KeyboardKey.Space)) {
+    if (Raylib.IsKeyPressed(KeyboardKey.Space))
+    {
         GeneratePipes();
         Global.gameState = GameState.Playing;
+    }
+    else if (Raylib.IsKeyPressed(KeyboardKey.One)) {
+        Global.difficulty = DIFFICULTY.EASY;
+    }
+    else if (Raylib.IsKeyPressed(KeyboardKey.Two))
+    {
+        Global.difficulty = DIFFICULTY.MEDIUM;
+    }
+    else if (Raylib.IsKeyPressed(KeyboardKey.Three))
+    {
+        Global.difficulty = DIFFICULTY.HARD;
     }
 }
 
@@ -269,11 +285,16 @@ class Pipe {
         Raylib.DrawRectangleLines((int)position.X, (int)position.Y, Global.pipeUpTexture.Width, Global.pipeUpTexture.Height, Color.Red);
     }
 }
+enum DIFFICULTY{ 
+    EASY,
+    MEDIUM,
+    HARD
+}
 
 class Global {
     public const int OG_WIDTH = 144;
     public const int OG_HEIGHT = 312;
-    public const int SCALE = 2;
+    public const int SCALE = 3;
     public static Texture2D backgroundTexture;
     public static Texture2D groundTexture;
     public static Texture2D titleTexture;
@@ -294,6 +315,7 @@ class Global {
     public static int score = 0;
     public static float deltaTime = 0.0f;
     public static bool drawAABB = false;
+    public static Enum difficulty = DIFFICULTY.EASY;
 
     private static Texture2D LoadTexture(string path) {
         var assembly = Assembly.GetExecutingAssembly();
