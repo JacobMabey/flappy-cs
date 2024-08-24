@@ -5,9 +5,10 @@ using Raylib_cs;
 struct Bird {
     private Vector2 position;
     private Vector2 velocity;
-    private float gravity = 20.0f;
+    private float gravity = 13.0f;
 
-    private float jumpForce = -10.0f;
+    private float jumpForce = -3.0f;
+    private float speed = 5;
     private float scoreTime = 0.0f;
     private float scoreRate = 0.75f;
     private float rotation = 0.0f;
@@ -57,7 +58,7 @@ struct Bird {
         CheckIfBetweenPipes();
 
         velocity.Y += gravity * Global.MULTIPLIER * Global.deltaTime;
-        position += velocity * Global.deltaTime;
+        position += velocity * speed * Global.deltaTime;
     }
 
     private void CheckCollisionWithPipes() {
