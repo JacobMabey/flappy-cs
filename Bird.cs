@@ -1,12 +1,13 @@
 using System.Numerics;
+using System.Reflection.PortableExecutable;
 using Raylib_cs;
 
 struct Bird {
     private Vector2 position;
     private Vector2 velocity;
-    private float gravity = 10.0f;
+    private float gravity = 20.0f;
 
-    private float jumpForce = -5.0f;
+    private float jumpForce = -10.0f;
     private float scoreTime = 0.0f;
     private float scoreRate = 0.75f;
     private float rotation = 0.0f;
@@ -23,11 +24,14 @@ struct Bird {
     public Bird(Vector2 position) {
         this.position = position;
         state = BirdState.Idle;
-        velocity = new Vector2(0, 0);
+        velocity = Vector2.Zero;
     }
 
     private bool IsGrounded() {
-        return position.Y >= 256;
+        if (position.Y >= 256) return true;
+        if(position.Y <= 0) return true;
+        return false;
+        
     }
 
     public void Update() {
@@ -36,7 +40,7 @@ struct Bird {
             state = BirdState.Flying;
         }
 
-        if (velocity.Y > 0) {
+        if (velocity.Y >= 0) {
             state = BirdState.Falling;
         }
 
