@@ -21,7 +21,7 @@ void GeneratePipes() {
         var offset = Raylib.GetRandomValue(150, 316);
         var downY = Raylib.GetRandomValue(180, 200);
         var upY = Raylib.GetRandomValue(-100, 0);
-        var x = Global.OG_WIDTH + (i * 100) + offset;
+        var x = Global.OG_WIDTH + (i * 100) * offset;
         Global.pipes.Add(new Pipe(new Vector2(x, upY), Pipe.PipeType.Up));
         Global.pipes.Add(new Pipe(new Vector2(x, downY), Pipe.PipeType.Down));
     }
@@ -32,12 +32,16 @@ void SetPipesPosition() {
     for (var i = 0; i < offPipes.Count; i += 2) {
         var offset = Raylib.GetRandomValue(150, 316);
         var downY = Raylib.GetRandomValue(180, 200);
-        var upY = Raylib.GetRandomValue(-100, 0);
-        var x = Global.OG_WIDTH + (i * 100) + offset; 
+        var upY = Raylib.GetRandomValue(-100, -20);
+        var x = Global.OG_WIDTH + (i * 100) * offset;
         offPipes[i].position = new Vector2(x, upY);
         offPipes[i + 1].position = new Vector2(x, downY);
+       
     }
 }
+
+        
+
 
 #endregion UtilFunctions
 

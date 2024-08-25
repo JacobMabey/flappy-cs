@@ -14,7 +14,7 @@ struct Bird {
     private float rotation = 0.0f;
     private float rotateCounter = 0.0f;
 
-    private enum BirdState {
+    public enum BirdState {
         Idle,
         Flying,
         Falling

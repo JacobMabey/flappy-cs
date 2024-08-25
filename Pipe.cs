@@ -5,6 +5,7 @@ class Pipe {
     public Vector2 position;
     private float speed = 5.0f;
 
+
     public enum PipeType {
         Up,
         Down
