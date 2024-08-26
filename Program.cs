@@ -44,19 +44,23 @@ void SetPipesPosition() {
 #region DrawFunctions
 
 void DrawGame() {
+    Raylib.DrawText((Global.score).ToString(), Global.OG_WIDTH / 2 - 10, 10, 20, Color.White);
     Global.pipes.ForEach(pipe => pipe.Draw());
+    Raylib.DrawTexture(Global.groundTexture, 0, 256, Color.White);
     bird.Draw();
-    Raylib.DrawText(Global.score.ToString(), Global.OG_WIDTH / 2 - 10, 10, 20, Color.White);
 }
 
 void DrawTitleScreen() {
+    Raylib.DrawTexture(Global.groundTexture, 0, 256, Color.White);
     Raylib.DrawTexture(Global.titleTexture, Global.OG_WIDTH / 2 - Global.titleTexture.Width / 2, 50, Color.White);
     Raylib.DrawTexture(Global.readyTexture, Global.OG_WIDTH / 2 - Global.readyTexture.Width / 2, 75, Color.White);
-    Raylib.DrawText("Press SPACE to start", Global.OG_WIDTH / 2 - 60, 110, 10, Color.White);
-    Raylib.DrawText("Current Difficult:" + Global.difficulty.ToString(), Global.OG_WIDTH / 2 - 60, 130, 10, Color.White);
-    Raylib.DrawText("Press 1 for Easy", Global.OG_WIDTH / 2 - 50, 150, 8, Color.Black);
-    Raylib.DrawText("Press 2 for Medium", Global.OG_WIDTH / 2 - 50, 170, 8, Color.Black);
-    Raylib.DrawText("Press 3 for Hard", Global.OG_WIDTH / 2 - 50, 190, 8, Color.Black);
+    Raylib.DrawText("Press SPACE to start", Global.OG_WIDTH / 2 - 60, 110, 10, Color.Black);
+    Raylib.DrawText("Current Difficult:" + Global.difficulty.ToString(), Global.OG_WIDTH / 2 - 60, 130, 10, Color.Black);
+    Raylib.DrawText("Current Players:" + Global.playerNum, Global.OG_WIDTH / 2 - 60, 150, 10, Color.Black);
+    Raylib.DrawText("Press 1 for Easy", Global.OG_WIDTH / 2 - 50, 170, 8, Color.Black);
+    Raylib.DrawText("Press 2 for Medium", Global.OG_WIDTH / 2 - 50, 190, 8, Color.Black);
+    Raylib.DrawText("Press 3 for Hard", Global.OG_WIDTH / 2 - 50, 210, 8, Color.Black);
+    Raylib.DrawText("Press 1-10 for players", Global.OG_WIDTH / 2 - 50, 230, 1, Color.Black);
 }
 
 void DrawGameOver() {
@@ -68,7 +72,6 @@ void DrawGameOver() {
 
 void DrawBackground() {
     Raylib.DrawTexture(Global.backgroundTexture, 0, 0, Color.White);
-    Raylib.DrawTexture(Global.groundTexture, 0, 256, Color.White);
 }
 
 #endregion DrawFunctions
@@ -88,7 +91,47 @@ void UpdateTitleScreen() {
         GeneratePipes();
         Global.gameState = GameState.Playing;
     }
-    else if (Raylib.IsKeyPressed(KeyboardKey.One)) {
+    else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.One)) {
+        Global.playerNum = 1;
+    }
+    else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.Two))
+    {
+        Global.playerNum = 2;
+    }
+    else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.Three))
+    {
+        Global.playerNum = 3;
+    }
+    else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.Four))
+    {
+        Global.playerNum = 4;
+    }
+    else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.Five))
+    {
+        Global.playerNum = 5;
+    }
+    else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.Six))
+    {
+        Global.playerNum = 6;
+    }
+    else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.Seven))
+    {
+        Global.playerNum = 7;
+    }
+    else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.Eight))
+    {
+        Global.playerNum = 8;
+    }
+    else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.Nine))
+    {
+        Global.playerNum = 9;
+    }
+    else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.Zero))
+    {
+        Global.playerNum = 10;
+    }
+    else if (Raylib.IsKeyPressed(KeyboardKey.One))
+    {
         Global.difficulty = DIFFICULTY.EASY;
     }
     else if (Raylib.IsKeyPressed(KeyboardKey.Two))

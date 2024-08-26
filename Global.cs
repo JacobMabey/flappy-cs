@@ -18,6 +18,7 @@ class Global {
     public static Texture2D silverMedalTexture;
     public static Texture2D goldMedalTexture;
     public static Texture2D scoreBoardTexture;
+    public static Texture2D animatedBackgorund;
     public static float MULTIPLIER = 10.0f;
     public static float GRAVITY = 10.0f;
     public static List<Pipe> pipes = new List<Pipe>();
@@ -26,6 +27,7 @@ class Global {
     public static float deltaTime = 0.0f;
     public static bool drawAABB = false;
     public static Enum difficulty = DIFFICULTY.EASY;
+    public static int playerNum = 1;
 
     private static Texture2D LoadTexture(string path) {
         var assembly = Assembly.GetExecutingAssembly();
@@ -52,5 +54,6 @@ class Global {
         silverMedalTexture = LoadTexture("Flappy.assets.silver_medal.png");
         goldMedalTexture = LoadTexture("Flappy.assets.gold_medal.png");
         scoreBoardTexture = LoadTexture("Flappy.assets.scoreboard_dead.png");
+        animatedBackgorund = LoadTexture("Flappy.assets.background.gif");
     }
 }
