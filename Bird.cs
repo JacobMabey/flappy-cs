@@ -5,7 +5,8 @@ using Raylib_cs;
 struct Bird {
     public KeyboardKey[] jumpKeys = [KeyboardKey.One, KeyboardKey.Two, KeyboardKey.Three, KeyboardKey.Four, KeyboardKey.Five, KeyboardKey.Six, KeyboardKey.Seven, KeyboardKey.Eight, KeyboardKey.Nine, KeyboardKey.Zero];
 
-    private int player = -1;
+    public int playerIndex { get; private set; } = -1;
+    public int Score { get; private set; } = 0;
     private Vector2 position;
     private Vector2 velocity;
     private float gravity = 13.0f;
@@ -20,8 +21,8 @@ struct Bird {
     {
         get
         {
-            if (player >= 1 && player <= 10)
-                return jumpKeys[player - 1];
+            if (playerIndex >= 1 && playerIndex <= 10)
+                return jumpKeys[playerIndex - 1];
             else
                 return KeyboardKey.Space;
         }
@@ -49,21 +50,29 @@ struct Bird {
         this.position = position;
         state = BirdState.Idle;
         velocity = Vector2.Zero;
-        this.player = player;
+        this.playerIndex = player;
     }
 
     public void Update() {
-        if (Raylib.IsKeyPressed(JumpControl) || (player == 1 && Raylib.IsKeyPressed(KeyboardKey.Space))) {
-            velocity.Y = jumpForce * Global.MULTIPLIER;
-            state = BirdState.Flying;
-        }
+        if (!IsDead)
+        {
+            if (Raylib.IsKeyPressed(JumpControl) || (playerIndex == 1 && Raylib.IsKeyPressed(KeyboardKey.Space))) {
+                Raylib.PlaySound(Global.wingSound);
 
-        if (velocity.Y >= 0) {
-            state = BirdState.Falling;
-        }
+                velocity.Y = jumpForce * Global.MULTIPLIER;
+                state = BirdState.Flying;
+            }
 
-        if (velocity == Vector2.Zero) {
-            state = BirdState.Idle;
+            if (velocity.Y >= 0) {
+                state = BirdState.Falling;
+            }
+
+            if (velocity == Vector2.Zero) {
+                state = BirdState.Idle;
+            }
+            
+            CheckCollisionWithPipes();
+            CheckIfBetweenPipes();
         }
 
         if (IsGrounded) {
@@ -71,9 +80,6 @@ struct Bird {
             velocity.Y = 0;
         }
         
-        CheckCollisionWithPipes();
-        CheckIfBetweenPipes();
-
         velocity.Y += gravity * Global.MULTIPLIER * Global.deltaTime;
         position += velocity * speed * Global.deltaTime;
     }
@@ -85,6 +91,7 @@ struct Bird {
                     new Rectangle(pipe.position.X, pipe.position.Y, Global.pipeUpTexture.Width,
                         Global.pipeUpTexture.Height)
                 )) {
+                Raylib.PlaySound(Global.birdHitSound);
                 IsDead = true;
             }
         }
@@ -94,7 +101,9 @@ struct Bird {
         foreach (var pipe in Global.pipes) {
             if (position.X > pipe.position.X && position.X < pipe.position.X + Global.pipeUpTexture.Width) {
                 if (scoreTime > scoreRate) {
-                    Global.score++;
+                    if (!Raylib.IsSoundPlaying(Global.pointSound))
+                        Raylib.PlaySound(Global.pointSound);
+                    Score++;
                     scoreTime = 0;
                 }
                 scoreTime += Global.deltaTime;

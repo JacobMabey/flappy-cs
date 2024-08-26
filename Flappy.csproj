@@ -38,6 +38,17 @@
       <EmbeddedResource Include="assets\silver_medal.png" />
       <None Remove="assets\title.png" />
       <EmbeddedResource Include="assets\title.png" />
+      
+      <None Remove="assets\sfx_die.wav" />
+      <EmbeddedResource Include="assets\sfx_die.wav" />
+      <None Remove="assets\sfx_hit.wav" />
+      <EmbeddedResource Include="assets\sfx_hit.wav" />
+      <None Remove="assets\sfx_point.wav" />
+      <EmbeddedResource Include="assets\sfx_point.wav" />
+      <None Remove="assets\sfx_swooshing.wav" />
+      <EmbeddedResource Include="assets\sfx_swooshing.wav" />
+      <None Remove="assets\sfx_wing.wav" />
+      <EmbeddedResource Include="assets\sfx_wing.wav" />
     </ItemGroup>
 
 </Project>

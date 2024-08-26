@@ -4,12 +4,11 @@ using Raylib_cs;
 
 
 Raylib.InitWindow(Global.OG_WIDTH * Global.SCALE, Global.OG_HEIGHT * Global.SCALE, "Flappy");
+Raylib.InitAudioDevice();
 Global.Initialize();
 
 var renderTexture = Raylib.LoadRenderTexture(Global.OG_WIDTH, Global.OG_HEIGHT);
 Raylib.SetTextureFilter(renderTexture.Texture, TextureFilter.Point);
-
-Bird[] birds = [];
 
 #region UtilFunctions
 
@@ -41,11 +40,11 @@ void SetPipesPosition() {
 #region DrawFunctions
 
 void DrawGame() {
-    Raylib.DrawText((Global.score).ToString(), Global.OG_WIDTH / 2 - 10, 10, 20, Color.White);
+    Raylib.DrawText(Global.Score.ToString(), Global.OG_WIDTH / 2 - 10, 10, 20, Color.White);
     Global.pipes.ForEach(pipe => pipe.Draw());
     Raylib.DrawTexture(Global.groundTexture, 0, 256, Color.White);
-    for (int i = 0; i < birds.Length; i++)
-        birds[i].Draw();
+    for (int i = 0; i < Global.birds.Length; i++)
+        Global.birds[i].Draw();
 }
 
 void DrawTitleScreen() {
@@ -64,8 +63,23 @@ void DrawTitleScreen() {
 void DrawGameOver() {
     Raylib.DrawTexture(Global.gameOverTexture, Global.OG_WIDTH / 2 - Global.gameOverTexture.Width / 2, 50, Color.White);
     Raylib.DrawTexture(Global.scoreBoardTexture, Global.OG_WIDTH / 2 - Global.scoreBoardTexture.Width / 2, 100, Color.White);
-    Raylib.DrawTexture(Global.score < 100 ? Global.silverMedalTexture : Global.goldMedalTexture, 30, 122, Color.White);
-    Raylib.DrawText(Global.score.ToString(), 98, 116, 10, Color.White);
+    Raylib.DrawTexture(Global.Score < 100 ? Global.silverMedalTexture : Global.goldMedalTexture, 30, 122, Color.White);
+    Raylib.DrawText(Global.Score.ToString(), 98, 116, 10, Color.White);
+
+    if (Global.playerNum > 1)
+    {
+        int winnerIndex = 1;
+        int maxScore = -1;
+        foreach (Bird bird in Global.birds)
+        {
+            if (bird.Score > maxScore)
+            {
+                maxScore = bird.Score;
+                winnerIndex = bird.playerIndex;
+            }
+        }
+        Raylib.DrawText(winnerIndex.ToString(), 98, 140, 10, Color.White);
+    }
 }
 
 void DrawBackground() {
@@ -82,24 +96,28 @@ void UpdateGame() {
     SetPipesPosition();
 
     bool birdAlive = false;
-    for (int i = 0; i < birds.Length; i++)
+    for (int i = 0; i < Global.birds.Length; i++)
     {
-        birds[i].Update();
-        if (!birds[i].IsDead)
+        Global.birds[i].Update();
+        if (!Global.birds[i].IsDead && !Global.birds[i].IsGrounded)
             birdAlive = true;
     }
-    if (!birdAlive)
+    if (!birdAlive) {
         Global.gameState = GameState.GameOver;
+        Raylib.PlaySound(Global.birdDieSound);
+    }
     
 }
 
 void UpdateTitleScreen() {
     if (Raylib.IsKeyPressed(KeyboardKey.Space))
     {
+        Raylib.PlaySound(Global.swooshSound);
+
         //Intitialize player count
-        birds = new Bird[Global.playerNum];
+        Global.birds = new Bird[Global.playerNum];
         for (int i = 0; i < Global.playerNum; i++)
-            birds[i] = GetNewBird(i + 1);
+            Global.birds[i] = GetNewBird(i + 1);
         
         GeneratePipes();
         Global.gameState = GameState.Playing;
@@ -169,9 +187,10 @@ void UpdateTitleScreen() {
 
 void UpdateGameOver() {
     if (Raylib.IsKeyPressed(KeyboardKey.Space)) {
+        Raylib.PlaySound(Global.swooshSound);
+        
         Global.gameState = GameState.TitleScreen;
-        Global.score = 0;
-        birds = [];
+        Global.birds = [];
         Global.pipes.Clear();
     }
 }
@@ -224,6 +243,7 @@ while (!Raylib.WindowShouldClose()) {
 
 #endregion GameLoop
 
+Raylib.CloseAudioDevice();
 Raylib.CloseWindow();
 
 Bird GetNewBird(int playerIndex) {

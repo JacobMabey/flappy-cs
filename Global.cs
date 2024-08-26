@@ -2,6 +2,8 @@ using System.Reflection;
 using Raylib_cs;
 
 class Global {
+    public static Bird[] birds = [];
+
     public const int OG_WIDTH = 144;
     public const int OG_HEIGHT = 312;
     public const int SCALE = 3;
@@ -19,11 +21,20 @@ class Global {
     public static Texture2D goldMedalTexture;
     public static Texture2D scoreBoardTexture;
     public static Texture2D animatedBackgorund;
+    public static Sound birdDieSound;
+    public static Sound birdHitSound;
+    public static Sound pointSound;
+    public static Sound swooshSound;
+    public static Sound wingSound;
     public static float MULTIPLIER = 10.0f;
     public static float GRAVITY { get => 10.0f + DifficultyMultiplier; }
     public static List<Pipe> pipes = new List<Pipe>();
     public static GameState gameState = GameState.TitleScreen;
-    public static int score = 0;
+    public static int Score {
+        get {
+            return birds.Select(b => b.Score).Max();
+        }
+    }
     public static float deltaTime = 0.0f;
     public static bool drawAABB = false;
     public static Enum difficulty = DIFFICULTY.EASY;
@@ -53,6 +64,17 @@ class Global {
         return Raylib.LoadTextureFromImage(Raylib.LoadImageFromMemory(".png", data));
     }
     
+    private static Sound LoadSound(string path) {
+        var assembly = Assembly.GetExecutingAssembly();
+        using var stream = assembly.GetManifestResourceStream(path);
+        if (stream == null) return new Sound();
+        using var ms = new MemoryStream();
+        stream.CopyTo(ms);
+        var data = ms.ToArray();
+        if (data.Length == 0) return new Sound();
+        return Raylib.LoadSoundFromWave(Raylib.LoadWaveFromMemory(".wav", data));
+    }
+
     public static void Initialize() {
         backgroundTexture = LoadTexture("Flappy.assets.bg.png");
         groundTexture = LoadTexture("Flappy.assets.ground.png");
@@ -68,5 +90,11 @@ class Global {
         goldMedalTexture = LoadTexture("Flappy.assets.gold_medal.png");
         scoreBoardTexture = LoadTexture("Flappy.assets.scoreboard_dead.png");
         animatedBackgorund = LoadTexture("Flappy.assets.background.gif");
+
+        birdDieSound = LoadSound("Flappy.assets.sfx_die.wav");
+        birdHitSound = LoadSound("Flappy.assets.sfx_hit.wav");
+        pointSound = LoadSound("Flappy.assets.sfx_point.wav");
+        swooshSound = LoadSound("Flappy.assets.sfx_swooshing.wav");
+        wingSound = LoadSound("Flappy.assets.sfx_wing.wav");
     }
 }
