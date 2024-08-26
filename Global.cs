@@ -20,7 +20,7 @@ class Global {
     public static Texture2D scoreBoardTexture;
     public static Texture2D animatedBackgorund;
     public static float MULTIPLIER = 10.0f;
-    public static float GRAVITY = 10.0f;
+    public static float GRAVITY { get => 10.0f + DifficultyMultiplier; }
     public static List<Pipe> pipes = new List<Pipe>();
     public static GameState gameState = GameState.TitleScreen;
     public static int score = 0;
@@ -28,6 +28,19 @@ class Global {
     public static bool drawAABB = false;
     public static Enum difficulty = DIFFICULTY.EASY;
     public static int playerNum = 1;
+
+    public static float DifficultyMultiplier
+    {
+        get {
+            switch (difficulty)
+            {
+                default:
+                case DIFFICULTY.EASY: return 1.0f;
+                case DIFFICULTY.MEDIUM: return 2.0f;
+                case DIFFICULTY.HARD: return 3.0f;
+            }
+        }
+    }
 
     private static Texture2D LoadTexture(string path) {
         var assembly = Assembly.GetExecutingAssembly();

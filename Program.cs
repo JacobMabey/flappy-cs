@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections;
+using System.Numerics;
 using Raylib_cs;
 
 
@@ -8,11 +9,7 @@ Global.Initialize();
 var renderTexture = Raylib.LoadRenderTexture(Global.OG_WIDTH, Global.OG_HEIGHT);
 Raylib.SetTextureFilter(renderTexture.Texture, TextureFilter.Point);
 
-//Define Player Bird
-var bird = new Bird(new Vector2(Global.OG_WIDTH / 2 - Global.idleBirdTexture.Width / 2,
-    Global.OG_HEIGHT / 2 - Global.idleBirdTexture.Height / 2));
-
-
+Bird[] birds = [];
 
 #region UtilFunctions
 
@@ -47,7 +44,8 @@ void DrawGame() {
     Raylib.DrawText((Global.score).ToString(), Global.OG_WIDTH / 2 - 10, 10, 20, Color.White);
     Global.pipes.ForEach(pipe => pipe.Draw());
     Raylib.DrawTexture(Global.groundTexture, 0, 256, Color.White);
-    bird.Draw();
+    for (int i = 0; i < birds.Length; i++)
+        birds[i].Draw();
 }
 
 void DrawTitleScreen() {
@@ -82,14 +80,39 @@ void DrawBackground() {
 void UpdateGame() {
     Global.pipes.ForEach(pipe => pipe.Update());
     SetPipesPosition();
-    bird.Update();
+
+    bool birdAlive = false;
+    for (int i = 0; i < birds.Length; i++)
+    {
+        birds[i].Update();
+        if (!birds[i].IsDead)
+            birdAlive = true;
+    }
+    if (!birdAlive)
+        Global.gameState = GameState.GameOver;
+    
 }
 
 void UpdateTitleScreen() {
     if (Raylib.IsKeyPressed(KeyboardKey.Space))
     {
+        //Intitialize player count
+        birds = new Bird[Global.playerNum];
+        for (int i = 0; i < Global.playerNum; i++)
+            birds[i] = GetNewBird(i + 1);
+        
         GeneratePipes();
         Global.gameState = GameState.Playing;
+    }
+    else if (Raylib.IsKeyPressed(KeyboardKey.Up)) {
+        Global.playerNum++;
+        if (Global.playerNum > 10)
+            Global.playerNum = 10;
+    }
+    else if (Raylib.IsKeyPressed(KeyboardKey.Down)) {
+        Global.playerNum--;
+        if (Global.playerNum < 1)
+            Global.playerNum = 1;
     }
     else if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.IsKeyPressed(KeyboardKey.One)) {
         Global.playerNum = 1;
@@ -148,8 +171,7 @@ void UpdateGameOver() {
     if (Raylib.IsKeyPressed(KeyboardKey.Space)) {
         Global.gameState = GameState.TitleScreen;
         Global.score = 0;
-        bird = new Bird(new Vector2(Global.OG_WIDTH / 2 - Global.idleBirdTexture.Width / 2,
-            Global.OG_HEIGHT / 2 - Global.idleBirdTexture.Height / 2));
+        birds = [];
         Global.pipes.Clear();
     }
 }
@@ -204,7 +226,11 @@ while (!Raylib.WindowShouldClose()) {
 
 Raylib.CloseWindow();
 
-
+Bird GetNewBird(int playerIndex) {
+    //Define Player Bird
+    return new Bird(new Vector2(Global.OG_WIDTH / 2 - Global.idleBirdTexture.Width / 2,
+        Global.OG_HEIGHT / 2 - Global.idleBirdTexture.Height / 2), playerIndex);
+}
 
 enum GameState {
     TitleScreen,

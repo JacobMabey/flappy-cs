@@ -15,6 +15,7 @@ class Pipe {
     public Pipe(Vector2 position, PipeType type) {
         this.position = position;
         this.type = type;
+        speed *= Global.DifficultyMultiplier;
     }
 
     public void Update() {

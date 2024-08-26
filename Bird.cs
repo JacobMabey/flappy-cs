@@ -3,6 +3,9 @@ using System.Reflection.PortableExecutable;
 using Raylib_cs;
 
 struct Bird {
+    public KeyboardKey[] jumpKeys = [KeyboardKey.One, KeyboardKey.Two, KeyboardKey.Three, KeyboardKey.Four, KeyboardKey.Five, KeyboardKey.Six, KeyboardKey.Seven, KeyboardKey.Eight, KeyboardKey.Nine, KeyboardKey.Zero];
+
+    private int player = -1;
     private Vector2 position;
     private Vector2 velocity;
     private float gravity = 13.0f;
@@ -13,6 +16,26 @@ struct Bird {
     private float scoreRate = 0.75f;
     private float rotation = 0.0f;
     private float rotateCounter = 0.0f;
+    private KeyboardKey JumpControl
+    {
+        get
+        {
+            if (player >= 1 && player <= 10)
+                return jumpKeys[player - 1];
+            else
+                return KeyboardKey.Space;
+        }
+    }
+
+    public bool IsGrounded {
+        get {
+            if (position.Y >= 256) return true;
+            if(position.Y <= 0) return true;
+            return false;
+        }
+    }
+
+    public bool IsDead { get; private set; } = false;
 
     private enum BirdState {
         Idle,
@@ -22,21 +45,15 @@ struct Bird {
 
     private BirdState state;
 
-    public Bird(Vector2 position) {
+    public Bird(Vector2 position, int player) {
         this.position = position;
         state = BirdState.Idle;
         velocity = Vector2.Zero;
-    }
-
-    private bool IsGrounded() {
-        if (position.Y >= 256) return true;
-        if(position.Y <= 0) return true;
-        return false;
-        
+        this.player = player;
     }
 
     public void Update() {
-        if (Raylib.IsKeyPressed(KeyboardKey.Space)) {
+        if (Raylib.IsKeyPressed(JumpControl) || (player == 1 && Raylib.IsKeyPressed(KeyboardKey.Space))) {
             velocity.Y = jumpForce * Global.MULTIPLIER;
             state = BirdState.Flying;
         }
@@ -49,9 +66,9 @@ struct Bird {
             state = BirdState.Idle;
         }
 
-        if (IsGrounded()) {
+        if (IsGrounded) {
+            IsDead = true;
             velocity.Y = 0;
-            Global.gameState = GameState.GameOver;
         }
         
         CheckCollisionWithPipes();
@@ -68,7 +85,7 @@ struct Bird {
                     new Rectangle(pipe.position.X, pipe.position.Y, Global.pipeUpTexture.Width,
                         Global.pipeUpTexture.Height)
                 )) {
-                Global.gameState = GameState.GameOver;
+                IsDead = true;
             }
         }
     }
@@ -86,13 +103,20 @@ struct Bird {
     }
 
     public void Draw() {
-        float velocityX = 2.0f * Global.MULTIPLIER;
-        rotation = (float)(Math.Atan2(velocity.Y, velocityX) * 180.0 / Math.PI);
-        if (rotation < rotateCounter || (rotation > rotateCounter && rotation > 20.0))
-            rotateCounter += (float)((rotateCounter < rotation ? 1 : -1) * Math.Sqrt(Math.Abs(rotation - rotateCounter)) * (rotateCounter < rotation ? 0.005 : 0.02));
-        rotateCounter %= 360.0f;
-        if (rotation < -30.0 && rotateCounter < -30.0f)
-            rotateCounter = -30.0f; 
+        Color color = Color.White;
+        if (IsDead) {
+            rotateCounter = 180.0f;
+            color = Color.Gray;
+        }
+        else {
+            float velocityX = 2.0f * Global.MULTIPLIER;
+            rotation = (float)(Math.Atan2(velocity.Y, velocityX) * 180.0 / Math.PI);
+            if (rotation < rotateCounter || (rotation > rotateCounter && rotation > 20.0))
+                rotateCounter += (float)((rotateCounter < rotation ? 1 : -1) * Math.Sqrt(Math.Abs(rotation - rotateCounter)) * (rotateCounter < rotation ? 0.005 : 0.02));
+            rotateCounter %= 360.0f;
+            if (rotation < -30.0 && rotateCounter < -30.0f)
+                rotateCounter = -30.0f;
+        }
 
         Texture2D drawTexture = Global.idleBirdTexture;
         switch (state) {
@@ -106,7 +130,7 @@ struct Bird {
                 drawTexture = Global.fallBirdTexture;
                 break;
         }
-        Raylib.DrawTexturePro(drawTexture, new Rectangle(0.0f, 0.0f, drawTexture.Width, drawTexture.Height), new Rectangle(position.X, position.Y, drawTexture.Width, drawTexture.Height), new Vector2(drawTexture.Width / 2.0f, drawTexture.Height / 2.0f), rotateCounter, Color.White);
+        Raylib.DrawTexturePro(drawTexture, new Rectangle(0.0f, 0.0f, drawTexture.Width, drawTexture.Height), new Rectangle(position.X, position.Y, drawTexture.Width, drawTexture.Height), new Vector2(drawTexture.Width / 2.0f, drawTexture.Height / 2.0f), rotateCounter, color);
         DrawAABB();
     }
     
