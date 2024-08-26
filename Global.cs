@@ -29,6 +29,8 @@ class Global {
     public static float MULTIPLIER = 10.0f;
     public static float GRAVITY { get => 10.0f + DifficultyMultiplier; }
     public static List<Pipe> pipes = new List<Pipe>();
+    public static float pipeTimerStart = 2.0f;
+    public static float pipeTimer = pipeTimerStart;
     public static GameState gameState = GameState.TitleScreen;
     public static int Score {
         get {

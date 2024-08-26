@@ -87,7 +87,7 @@ struct Bird {
     private void CheckCollisionWithPipes() {
         foreach (var pipe in Global.pipes) {
             if (Raylib.CheckCollisionRecs(
-                    new Rectangle(position.X, position.Y, Global.idleBirdTexture.Width, Global.idleBirdTexture.Height),
+                    new Rectangle(position.X - Global.idleBirdTexture.Width / 2.0f, position.Y - Global.idleBirdTexture.Height / 2.0f, Global.idleBirdTexture.Width, Global.idleBirdTexture.Height),
                     new Rectangle(pipe.position.X, pipe.position.Y, Global.pipeUpTexture.Width,
                         Global.pipeUpTexture.Height)
                 )) {
@@ -145,6 +145,6 @@ struct Bird {
     
     private void DrawAABB() {
         if (!Global.drawAABB) return;
-        Raylib.DrawRectangleLines((int)position.X, (int)position.Y, Global.idleBirdTexture.Width, Global.idleBirdTexture.Height, Color.Red);
+        Raylib.DrawRectangleLines((int)(position.X - Global.idleBirdTexture.Width / 2.0f), (int)(position.Y - Global.idleBirdTexture.Height / 2.0f), Global.idleBirdTexture.Width, Global.idleBirdTexture.Height, Color.Red);
     }
 }

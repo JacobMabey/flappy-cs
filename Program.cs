@@ -12,27 +12,14 @@ Raylib.SetTextureFilter(renderTexture.Texture, TextureFilter.Point);
 
 #region UtilFunctions
 
-void GeneratePipes() {
-    for (var i = 0; i < 5; i++) {
-        var offset = Raylib.GetRandomValue(150, 316);
-        var downY = Raylib.GetRandomValue(180, 200);
-        var upY = Raylib.GetRandomValue(-100, 0);
-        var x = Global.OG_WIDTH + (i * 100) + offset;
-        Global.pipes.Add(new Pipe(new Vector2(x, upY), Pipe.PipeType.Up));
-        Global.pipes.Add(new Pipe(new Vector2(x, downY), Pipe.PipeType.Down));
-    }
-}
-
-void SetPipesPosition() {
-    var offPipes = Global.pipes.Where(pipe => pipe.position.X < 0).ToList();
-    for (var i = 0; i < offPipes.Count; i += 2) {
-        var offset = Raylib.GetRandomValue(150, 316);
-        var downY = Raylib.GetRandomValue(180, 200);
-        var upY = Raylib.GetRandomValue(-100, 0);
-        var x = Global.OG_WIDTH + (i * 100) + offset; 
-        offPipes[i].position = new Vector2(x, upY);
-        offPipes[i + 1].position = new Vector2(x, downY);
-    }
+void GeneratePipe() {
+    var offset = Raylib.GetRandomValue(20, 60);
+    var pipeSpace = Raylib.GetRandomValue(200, 270);
+    var upY = Raylib.GetRandomValue(-120, -50);
+    var downY = upY + pipeSpace;
+    var x = Global.OG_WIDTH + offset;
+    Global.pipes.Add(new Pipe(new Vector2(x, upY), Pipe.PipeType.Up));
+    Global.pipes.Add(new Pipe(new Vector2(x, downY), Pipe.PipeType.Down));
 }
 
 #endregion UtilFunctions
@@ -93,7 +80,12 @@ void DrawBackground() {
 
 void UpdateGame() {
     Global.pipes.ForEach(pipe => pipe.Update());
-    SetPipesPosition();
+    Global.pipes.RemoveAll(pipe => pipe.position.X < -20);
+    Global.pipeTimer -= Global.deltaTime;
+    if (Global.pipeTimer < 0.0f) {
+        Global.pipeTimer = Global.pipeTimerStart;
+        GeneratePipe();
+    }
 
     bool birdAlive = false;
     for (int i = 0; i < Global.birds.Length; i++)
@@ -118,8 +110,17 @@ void UpdateTitleScreen() {
         Global.birds = new Bird[Global.playerNum];
         for (int i = 0; i < Global.playerNum; i++)
             Global.birds[i] = GetNewBird(i + 1);
+
+        switch(Global.difficulty) {
+            default:
+            case DIFFICULTY.EASY: Global.pipeTimerStart = 2.0f;
+                break;
+            case DIFFICULTY.MEDIUM: Global.pipeTimerStart = 1.5f;
+                break;
+            case DIFFICULTY.HARD: Global.pipeTimerStart = 1.25f;
+                break;
+        }
         
-        GeneratePipes();
         Global.gameState = GameState.Playing;
     }
     else if (Raylib.IsKeyPressed(KeyboardKey.Up)) {
@@ -248,7 +249,7 @@ Raylib.CloseWindow();
 
 Bird GetNewBird(int playerIndex) {
     //Define Player Bird
-    return new Bird(new Vector2(Global.OG_WIDTH / 2 - Global.idleBirdTexture.Width / 2,
+    return new Bird(new Vector2(Global.OG_WIDTH / 2 - Global.idleBirdTexture.Width / 2 + playerIndex * 3,
         Global.OG_HEIGHT / 2 - Global.idleBirdTexture.Height / 2), playerIndex);
 }
 

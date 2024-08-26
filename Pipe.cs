@@ -15,14 +15,9 @@ class Pipe {
     public Pipe(Vector2 position, PipeType type) {
         this.position = position;
         this.type = type;
-        speed *= Global.DifficultyMultiplier;
     }
 
     public void Update() {
-        if (position.X < 0) {
-            position.X = Global.OG_WIDTH + Global.pipeUpTexture.Width;
-        }
-
         position.X -= speed * Global.deltaTime * Global.MULTIPLIER;
     }
 
