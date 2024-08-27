@@ -27,11 +27,93 @@ void GeneratePipe() {
 #region DrawFunctions
 
 void DrawGame() {
+
     Raylib.DrawText(Global.Score.ToString(), Global.OG_WIDTH / 2 - 10, 10, 20, Color.White);
     Global.pipes.ForEach(pipe => pipe.Draw());
     Raylib.DrawTexture(Global.groundTexture, 0, 256, Color.White);
     for (int i = 0; i < Global.birds.Length; i++)
+    {
+       if (i >= 0)
+       {
+            Global.birds[i].p1Used = false;
+        }
+        
+            if(i >= 1 )
+            {
+                Global.birds[i].p1Used = true;
+               
+            }
+        if (i >= 2)
+        {
+            Global.birds[i].p1Used = true;
+            Global.birds[i].p2Used = true;
+        }
+        if (i >= 3)
+        {
+            Global.birds[i].p1Used = true;
+            Global.birds[i].p2Used = true;
+            Global.birds[i].p3Used = true;
+        }
+        if (i >= 4)
+        {
+            Global.birds[i].p1Used = true;
+            Global.birds[i].p2Used = true;
+            Global.birds[i].p3Used = true;
+            Global.birds[i].p4Used = true;
+        }
+        if (i >= 5)
+        {
+            Global.birds[i].p1Used = true;
+            Global.birds[i].p2Used = true;
+            Global.birds[i].p3Used = true;
+            Global.birds[i].p4Used = true;
+            Global.birds[i].p5Used = true;
+        }
+        if (i >= 6)
+        {
+            Global.birds[i].p1Used = true;
+            Global.birds[i].p2Used = true;
+            Global.birds[i].p3Used = true;
+            Global.birds[i].p4Used = true;
+            Global.birds[i].p5Used = true;
+            Global.birds[i].p6Used = true;
+        }
+        if (i >= 7)
+        {
+            Global.birds[i].p1Used = true;
+            Global.birds[i].p2Used = true;
+            Global.birds[i].p3Used = true;
+            Global.birds[i].p4Used = true;
+            Global.birds[i].p5Used = true;
+            Global.birds[i].p6Used = true;
+            Global.birds[i].p7Used = true;
+        }
+        if (i >= 8)
+        {
+            Global.birds[i].p1Used = true;
+            Global.birds[i].p2Used = true;
+            Global.birds[i].p3Used = true;
+            Global.birds[i].p4Used = true;
+            Global.birds[i].p5Used = true;
+            Global.birds[i].p6Used = true;
+            Global.birds[i].p7Used = true;
+            Global.birds[i].p8Used = true;
+        }
+        if (i >= 9)
+        {
+            Global.birds[i].p1Used = true;
+            Global.birds[i].p2Used = true;
+            Global.birds[i].p3Used = true;
+            Global.birds[i].p4Used = true;
+            Global.birds[i].p5Used = true;
+            Global.birds[i].p6Used = true;
+            Global.birds[i].p7Used = true;
+            Global.birds[i].p8Used = true;
+            Global.birds[i].p9Used = true;
+        }
         Global.birds[i].Draw();
+
+    }
 }
 
 void DrawTitleScreen() {

@@ -17,6 +17,18 @@ struct Bird {
     private float scoreRate = 0.75f;
     private float rotation = 0.0f;
     private float rotateCounter = 0.0f;
+
+    public bool p1Used = false;
+    public bool p2Used = false;
+    public bool p3Used = false;
+    public bool p4Used = false;
+    public bool p5Used = false;
+   public bool p6Used = false;
+    public bool p7Used = false;
+    public bool p8Used = false;
+    public bool p9Used = false;
+    public bool p10Used = false;
+
     private KeyboardKey JumpControl
     {
         get
@@ -127,18 +139,202 @@ struct Bird {
                 rotateCounter = -30.0f;
         }
 
-        Texture2D drawTexture = Global.idleBirdTexture;
-        switch (state) {
-            case BirdState.Idle:
-                drawTexture = Global.idleBirdTexture;
-                break;
-            case BirdState.Flying:
-                drawTexture = Global.flyBirdTexture;
-                break;
-            case BirdState.Falling:
-                drawTexture = Global.fallBirdTexture;
-                break;
+        Texture2D drawTexture;
+        if(!p1Used)
+        {
+
+            drawTexture = Global.idleBirdTexture;
+            switch (state) {
+                case BirdState.Idle:
+                    drawTexture = Global.idleBirdTexture;
+                    break;
+                case BirdState.Flying:
+                    drawTexture = Global.flyBirdTexture;
+                    break;
+                case BirdState.Falling:
+                    drawTexture = Global.fallBirdTexture;
+                    break;
+
+            }
         }
+        else if(p1Used && !p2Used) 
+        
+        {
+            drawTexture = Global.idleBirdTexture2;
+            switch (state)
+            {
+                case BirdState.Idle:
+                    drawTexture = Global.idleBirdTexture2;
+                    break;
+                case BirdState.Flying:
+                    drawTexture = Global.flyBirdTexture2;
+                    break;
+                case BirdState.Falling:
+                    drawTexture = Global.fallBirdTexture2;
+                    break;
+
+            }
+          
+        }
+        else if (p1Used && p2Used && !p3Used)
+
+        {
+            drawTexture = Global.idleBirdTexture3;
+            switch (state)
+            {
+                case BirdState.Idle:
+                    drawTexture = Global.idleBirdTexture3;
+                    break;
+                case BirdState.Flying:
+                    drawTexture = Global.flyBirdTexture3;
+                    break;
+                case BirdState.Falling:
+                    drawTexture = Global.fallBirdTexture3;
+                    break;
+
+            }
+          
+        }
+        else if (p1Used && p2Used && p3Used && !p4Used)
+
+        {
+            drawTexture = Global.idleBirdTexture4;
+            switch (state)
+            {
+                case BirdState.Idle:
+                    drawTexture = Global.idleBirdTexture4;
+                    break;
+                case BirdState.Flying:
+                    drawTexture = Global.flyBirdTexture4;
+                    break;
+                case BirdState.Falling:
+                    drawTexture = Global.fallBirdTexture4;
+                    break;
+
+            }
+         
+        }
+        else if (p1Used && p2Used && p3Used && p4Used && !p5Used)
+
+        {
+            drawTexture = Global.idleBirdTexture5;
+            switch (state)
+            {
+                case BirdState.Idle:
+                    drawTexture = Global.idleBirdTexture5;
+                    break;
+                case BirdState.Flying:
+                    drawTexture = Global.flyBirdTexture5;
+                    break;
+                case BirdState.Falling:
+                    drawTexture = Global.fallBirdTexture5;
+                    break;
+
+            }
+          
+        }
+        else if (p1Used && p2Used && p3Used && p4Used && p5Used && !p6Used)
+
+        {
+            drawTexture = Global.idleBirdTexture6;
+            switch (state)
+            {
+                case BirdState.Idle:
+                    drawTexture = Global.idleBirdTexture6;
+                    break;
+                case BirdState.Flying:
+                    drawTexture = Global.flyBirdTexture6;
+                    break;
+                case BirdState.Falling:
+                    drawTexture = Global.fallBirdTexture6;
+                    break;
+
+            }
+          
+        }
+        else if (p1Used && p2Used && p3Used && p4Used && p5Used && p6Used && !p7Used)
+
+        {
+            drawTexture = Global.idleBirdTexture7;
+            switch (state)
+            {
+                case BirdState.Idle:
+                    drawTexture = Global.idleBirdTexture7;
+                    break;
+                case BirdState.Flying:
+                    drawTexture = Global.flyBirdTexture7;
+                    break;
+                case BirdState.Falling:
+                    drawTexture = Global.fallBirdTexture7;
+                    break;
+
+            }
+         
+        }
+        else if (p1Used && p2Used && p3Used && p4Used && p5Used && p6Used && p7Used && !p8Used)
+
+        {
+            drawTexture = Global.idleBirdTexture8;
+            switch (state)
+            {
+                case BirdState.Idle:
+                    drawTexture = Global.idleBirdTexture8;
+                    break;
+                case BirdState.Flying:
+                    drawTexture = Global.flyBirdTexture8;
+                    break;
+                case BirdState.Falling:
+                    drawTexture = Global.fallBirdTexture8;
+                    break;
+
+            }
+
+        }
+        else if (p1Used && p2Used && p3Used && p4Used && p5Used && p6Used && p7Used && p8Used && !p9Used)
+
+        {
+            drawTexture = Global.idleBirdTexture9;
+            switch (state)
+            {
+                case BirdState.Idle:
+                    drawTexture = Global.idleBirdTexture9;
+                    break;
+                case BirdState.Flying:
+                    drawTexture = Global.flyBirdTexture9;
+                    break;
+                case BirdState.Falling:
+                    drawTexture = Global.fallBirdTexture9;
+                    break;
+
+            }
+
+        }
+        else if (p1Used && p2Used && p3Used && p4Used && p5Used && p6Used && p7Used && p8Used && p9Used && !p10Used)
+
+        {
+            drawTexture = Global.idleBirdTexture10;
+            switch (state)
+            {
+                case BirdState.Idle:
+                    drawTexture = Global.idleBirdTexture10;
+                    break;
+                case BirdState.Flying:
+                    drawTexture = Global.flyBirdTexture10;
+                    break;
+                case BirdState.Falling:
+                    drawTexture = Global.fallBirdTexture10;
+                    break;
+
+            }
+
+        }
+        else
+        {
+            drawTexture = Global.idleBirdTexture2;
+
+        }
+
+
         Raylib.DrawTexturePro(drawTexture, new Rectangle(0.0f, 0.0f, drawTexture.Width, drawTexture.Height), new Rectangle(position.X, position.Y, drawTexture.Width, drawTexture.Height), new Vector2(drawTexture.Width / 2.0f, drawTexture.Height / 2.0f), rotateCounter, color);
         DrawAABB();
     }
