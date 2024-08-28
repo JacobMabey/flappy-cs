@@ -7,7 +7,7 @@ namespace BankTests
     public class BankAccountTests
     {
         [Test]
-        public void TestMethod1()
+        public void TestCollisionWithGround()
         {
             Bird bird = new Bird(new Vector2(Global.OG_WIDTH / 2 - Global.idleBirdTexture.Width / 2 + 1 * 3,
                 Global.OG_HEIGHT + 30), 1);
@@ -16,7 +16,7 @@ namespace BankTests
         }
 
         [Test]
-        public void TestMethod2()
+        public void TestCollisionWithPipe()
         {
             Pipe pipe = new Pipe(new Vector2(Global.OG_WIDTH / 2 - Global.idleBirdTexture.Width / 2 + 1 * 3,
                 Global.OG_HEIGHT / 2 - Global.idleBirdTexture.Height / 2), Pipe.PipeType.Up);
