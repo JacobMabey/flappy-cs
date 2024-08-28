@@ -96,7 +96,7 @@ struct Bird {
         position += velocity * speed * Global.deltaTime;
     }
 
-    private void CheckCollisionWithPipes() {
+    public void CheckCollisionWithPipes() {
         foreach (var pipe in Global.pipes) {
             if (Raylib.CheckCollisionRecs(
                     new Rectangle(position.X - Global.idleBirdTexture.Width / 2.0f, position.Y - Global.idleBirdTexture.Height / 2.0f, Global.idleBirdTexture.Width, Global.idleBirdTexture.Height),
